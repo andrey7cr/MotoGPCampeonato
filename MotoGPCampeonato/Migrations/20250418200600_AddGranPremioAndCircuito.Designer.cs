@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotoGPCampeonato.Data;
 
@@ -11,9 +12,11 @@ using MotoGPCampeonato.Data;
 namespace MotoGPCampeonato.Migrations
 {
     [DbContext(typeof(MotoGPDbContext))]
-    partial class MotoGPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250418200600_AddGranPremioAndCircuito")]
+    partial class AddGranPremioAndCircuito
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,10 +36,17 @@ namespace MotoGPCampeonato.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GranPremioId")
-                        .HasColumnType("int");
-
                     b.Property<string>("NombreCarrera")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NombreCircuito")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Pais")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -45,8 +55,6 @@ namespace MotoGPCampeonato.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("CarreraId");
-
-                    b.HasIndex("GranPremioId");
 
                     b.ToTable("Carreras");
                 });
@@ -64,12 +72,12 @@ namespace MotoGPCampeonato.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("PaisId")
-                        .HasColumnType("int");
+                    b.Property<string>("Ubicacion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("CircuitoId");
-
-                    b.HasIndex("PaisId");
 
                     b.ToTable("Circuitos");
                 });
@@ -121,34 +129,11 @@ namespace MotoGPCampeonato.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("PaisId")
-                        .HasColumnType("int");
-
                     b.HasKey("GranPremioId");
 
                     b.HasIndex("CircuitoId");
 
-                    b.HasIndex("PaisId");
-
                     b.ToTable("GrandesPremios");
-                });
-
-            modelBuilder.Entity("MotoGPCampeonato.Models.Pais", b =>
-                {
-                    b.Property<int>("PaisId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaisId"));
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("PaisId");
-
-                    b.ToTable("Paises");
                 });
 
             modelBuilder.Entity("MotoGPCampeonato.Models.Piloto", b =>
@@ -232,28 +217,6 @@ namespace MotoGPCampeonato.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("MotoGPCampeonato.Models.Carrera", b =>
-                {
-                    b.HasOne("MotoGPCampeonato.Models.GranPremio", "GranPremio")
-                        .WithMany()
-                        .HasForeignKey("GranPremioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GranPremio");
-                });
-
-            modelBuilder.Entity("MotoGPCampeonato.Models.Circuito", b =>
-                {
-                    b.HasOne("MotoGPCampeonato.Models.Pais", "Pais")
-                        .WithMany()
-                        .HasForeignKey("PaisId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Pais");
-                });
-
             modelBuilder.Entity("MotoGPCampeonato.Models.GranPremio", b =>
                 {
                     b.HasOne("MotoGPCampeonato.Models.Circuito", "Circuito")
@@ -262,15 +225,7 @@ namespace MotoGPCampeonato.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MotoGPCampeonato.Models.Pais", "Pais")
-                        .WithMany()
-                        .HasForeignKey("PaisId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Circuito");
-
-                    b.Navigation("Pais");
                 });
 
             modelBuilder.Entity("MotoGPCampeonato.Models.Piloto", b =>

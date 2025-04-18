@@ -1,0 +1,49 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var carrera = ViewBag.Carrera as MotoGPCampeonato.Models.Carrera;
+    var pilotos = ViewBag.Pilotos as List<MotoGPCampeonato.Models.Piloto>;
+}
+
+<h2>Registrar Resultados - @carrera.Tipo @carrera.GranPremio?.Circuito?.Nombre</h2>
+<p><strong>Fecha:</strong> @carrera.Fecha.ToShortDateString()</p>
+<p><strong>País:</strong> @carrera.GranPremio?.Circuito?.Pais?.Nombre</p>
+
+
+<form asp-action="RegistrarResultados" method="post">
+    <input type="hidden" name="carreraId" value="@carrera.CarreraId" />
+
+    <p>Ordena los pilotos del 1° al último según el orden de llegada:</p>
+
+    <table class="table table-bordered table-dark">
+        <thead>
+            <tr>
+                <th>Posición</th>
+                <th>Piloto</th>
+                <th>Equipo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < pilotos.Count; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>
+                        <select name="pilotoIds" class="form-select" required>
+                            <option value="">-- Seleccionar piloto --</option>
+                            @foreach (var p in pilotos)
+                            {
+                                <option value="@p.PilotoId">@p.Nombre - @p.Equipo?.Nombre</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        
+                        <span>-</span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-success">Guardar Resultados</button>
+</form>

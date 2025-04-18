@@ -1,0 +1,72 @@
+﻿@model MotoGPCampeonato.Models.Carrera
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Nueva Carrera";
+}
+
+<h2 class="mt-4 mb-3">Registrar Nueva Carrera</h2>
+
+<form asp-action="Crear" method="post">
+    <div class="mb-3">
+        <label asp-for="NombreCarrera" class="form-label"></label>
+        <input asp-for="NombreCarrera" class="form-control" />
+        <span asp-validation-for="NombreCarrera" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="GranPremioId" class="form-label">Gran Premio</label>
+        <select asp-for="GranPremioId" asp-items="ViewBag.GrandesPremios" class="form-select" id="gpSelect"></select>
+        <span asp-validation-for="GranPremioId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Circuito</label>
+        <input type="text" class="form-control" id="circuitoInput" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">País</label>
+        <input type="text" class="form-control" id="paisInput" disabled />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Fecha" class="form-label"></label>
+        <input asp-for="Fecha" type="date" class="form-control" />
+        <span asp-validation-for="Fecha" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Tipo" class="form-label"></label>
+        <select asp-for="Tipo" asp-items="Html.GetEnumSelectList<TipoCarrera>()" class="form-select"></select>
+        <span asp-validation-for="Tipo" class="text-danger"></span>
+    </div>
+
+    <div class="text-end">
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-check-circle"></i> Guardar
+        </button>
+        <a href="/Carreras/Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left-circle"></i> Cancelar
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $("#gpSelect").change(function () {
+                var gpId = $(this).val();
+                if (gpId) {
+                    $.get("/Carreras/ObtenerDatosGP", { granPremioId: gpId }, function (data) {
+                        $("#circuitoInput").val(data.circuito);
+                        $("#paisInput").val(data.pais);
+                    });
+                } else {
+                    $("#circuitoInput").val("");
+                    $("#paisInput").val("");
+                }
+            });
+        });
+    </script>
+}

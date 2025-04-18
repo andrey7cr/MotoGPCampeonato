@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MotoGPCampeonato.Models.GranPremio>
+@{
+    ViewData["Title"] = "Grandes Premios";
+}
+
+<h2>Grandes Premios</h2>
+<a href="/GrandesPremios/Crear" class="btn btn-success mb-3">+ Nuevo Gran Premio</a>
+
+<table class="table table-dark table-bordered">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Circuito</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var gp in Model)
+        {
+            <tr>
+                <td>@gp.Nombre</td>
+                <td>@gp.Circuito?.Nombre</td>
+                <td>
+                    <a href="/GrandesPremios/Editar/@gp.GranPremioId" class="btn btn-sm btn-warning">Editar</a>
+                    <form asp-action="Eliminar" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@gp.GranPremioId" />
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este Gran Premio?')">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

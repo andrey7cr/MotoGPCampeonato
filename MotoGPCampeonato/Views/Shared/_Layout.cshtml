@@ -38,13 +38,24 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/Pilotos/Index"><i class="bi bi-person-vcard"></i> Pilotos</a>
                     </li>
-
-                    @if (rol == "Administrador")
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Carreras/Index"><i class="bi bi-flag-fill"></i> Carreras</a>
+                    </li>
+                    @if (Context.Session.GetString("Rol") == "Administrador")
                     {
-                        <li class="nav-item">
-                            <a class="nav-link" href="/Equipos/Crear"><i class="bi bi-plus-circle"></i> Nuevo Equipo</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="configDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-wrench-adjustable-circle"></i> Configuración
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/Paises/Index"><i class="bi bi-flag-fill"></i> Países</a></li>
+                                <li><a class="dropdown-item" href="/Circuitos/Index"><i class="bi bi-geo-alt-fill"></i> Circuitos</a></li>
+                                <li><a class="dropdown-item" href="/GrandesPremios/Index"><i class="bi bi-globe2"></i> Grandes Premios</a></li>
+                            </ul>
                         </li>
                     }
+
+
                 </ul>
                 
 

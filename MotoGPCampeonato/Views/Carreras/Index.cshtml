@@ -1,0 +1,96 @@
+﻿@model IEnumerable<MotoGPCampeonato.Models.Carrera>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Carreras";
+    var rol = Context.Session.GetString("Rol");
+}
+
+<h2 class="mt-4 mb-3">Listado de Carreras</h2>
+
+@if (rol == "Administrador")
+{
+    <div class="text-end mb-3">
+        <a href="/Carreras/Crear" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Nueva Carrera
+        </a>
+    </div>
+}
+
+<table class="table table-bordered table-dark table-hover">
+    <thead class="table-secondary text-dark">
+        <tr>
+            <th>Fecha</th>
+            <th>Nombre</th>
+            <th>Circuito</th>
+            <th>País</th>
+            <th>Tipo</th>
+            <th>Resultados</th>
+            @if (rol == "Administrador")
+            {
+                <th>Acciones</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var carrera in Model.OrderByDescending(c => c.Fecha))
+        {
+            <tr>
+                <td>@carrera.Fecha.ToShortDateString()</td>
+                <td>@carrera.NombreCarrera</td>
+                <td>@carrera.GranPremio.Circuito?.Nombre</td>
+                <td>@carrera.GranPremio.Circuito?.Pais?.Nombre</td>
+
+                <td>@carrera.Tipo</td>
+                <td>
+                    @{
+                        var tieneResultados = carrera.Resultados?.Any() == true;
+                    }
+                    @if (tieneResultados)
+                    {
+                        <span class="badge bg-success">Registrados</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-warning text-dark">Pendientes</span>
+                    }
+                </td>
+                @if (rol == "Administrador")
+                {
+                    <td>
+                        @if (!tieneResultados)
+                        {
+                            <a href="/Carreras/RegistrarResultados/@carrera.CarreraId" class="btn btn-sm btn-primary mb-1">
+                                <i class="bi bi-clipboard-check"></i> Resultados
+                            </a>
+                        }
+
+                        <a href="/Carreras/Editar/@carrera.CarreraId" class="btn btn-sm btn-warning mb-1">
+                            <i class="bi bi-pencil-square"></i> Editar
+                        </a>
+
+                        <form asp-action="Eliminar" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@carrera.CarreraId" />
+                            <button type="submit" class="btn btn-sm btn-danger"
+                                    onclick="return confirm('¿Seguro que deseas eliminar esta carrera?');">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        </form>
+                    </td>
+
+                    <td>
+                        @if (!tieneResultados)
+                        {
+                            <a href="/Carreras/RegistrarResultados/@carrera.CarreraId" class="btn btn-sm btn-primary">
+                                Registrar Resultados
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">Finalizada</span>
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

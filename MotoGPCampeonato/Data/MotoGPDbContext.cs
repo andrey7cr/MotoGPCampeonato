@@ -11,6 +11,13 @@ namespace MotoGPCampeonato.Data
         
         public DbSet<Equipo> Equipos { get; set; }
         public DbSet<Piloto> Pilotos { get; set; }
+        public DbSet<Carrera> Carreras { get; set; }
+        public DbSet<ResultadoCarrera> ResultadosCarrera { get; set; }
+        public DbSet<Circuito> Circuitos { get; set; }
+        public DbSet<GranPremio> GrandesPremios { get; set; }
+        public DbSet<Pais> Paises { get; set; }
+
+
 
 
     }
