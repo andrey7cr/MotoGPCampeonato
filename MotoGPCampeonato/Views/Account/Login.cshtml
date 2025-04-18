@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Iniciar Sesión";
+}
+@section Styles {
+    <style>
+        h2, label, .form-control, .btn {
+            font-family: 'Orbitron', sans-serif;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+}
+
+<body class="login-page">
+    <div class="login-container shadow-lg">
+        <h2 class="text-center mb-4">MotoGP Championship</h2>
+        <form asp-action="Login" method="post">
+            <div class="mb-3">
+                <label>Email</label>
+                <input name="correo" class="form-control" type="email" required />
+            </div>
+            <div class="mb-3">
+                <label>Contraseña</label>
+                <input name="contrasena" class="form-control" type="password" required />
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-danger">Iniciar Sesión</button>
+            </div>
+        </form>
+
+        <hr class="my-4" />
+        <h5 class="text-center">¿No tienes cuenta?</h5>
+        <div class="text-center">
+            <a href="/Account/Register" class="btn btn-outline-light mt-2">Registrarse</a>
+        </div>
+    </div>
+</body>

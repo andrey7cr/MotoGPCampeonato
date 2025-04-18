@@ -1,0 +1,38 @@
+﻿@model MotoGPCampeonato.Models.Usuario
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Registro";
+}
+<body class="register-page">
+    <div class="register-container shadow-lg">
+        <h2 class="text-center mb-4">Registrarse</h2>
+        <form asp-action="Register" method="post">
+            <div class="mb-3">
+                <label asp-for="Nombre"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Correo"></label>
+                <input asp-for="Correo" class="form-control" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Contrasena"></label>
+                <input asp-for="Contrasena" class="form-control" type="password" />
+                <span asp-validation-for="Contrasena" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Rol"></label>
+                <select asp-for="Rol" class="form-select" asp-items="Html.GetEnumSelectList<RolUsuario>()"></select>
+                <span asp-validation-for="Rol" class="text-danger"></span>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-danger">Crear cuenta</button>
+            </div>
+        </form>
+        <div class="text-center mt-3">
+            <a href="/Account/Login" class="text-light">¿Ya tienes una cuenta? Inicia sesión</a>
+        </div>
+    </div>
+</body>

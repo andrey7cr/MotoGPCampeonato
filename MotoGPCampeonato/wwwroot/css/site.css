@@ -1,0 +1,81 @@
+body.login-page {
+    background: url('/images/motogp-bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 450px;
+    margin: 0 auto;
+    margin-top: 10vh;
+}
+
+body.register-page {
+    background: url('/images/motogp-bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.register-container {
+    background: rgba(0, 0, 0, 0.75);
+    padding: 40px;
+    border-radius: 15px;
+    color: white;
+    width: 100%;
+    max-width: 500px;
+}
+
+h2, h4, label, .form-control, .btn {
+    font-family: 'Orbitron', sans-serif;
+}
+
+
+body.home-page {
+    background: url('/images/GP.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    color: white;
+}
+
+.home-overlay {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 1000px;
+    margin: 5vh auto;
+}
+
+body.home-page {
+    background: url('/images/GP.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.card-bg-dark {
+    background-color: rgba(0, 0, 0, 0.75);
+    border: 1px solid #ff0000;
+    color: white;
+}
+
+.card-bg-dark:hover {
+    background-color: rgba(255, 0, 0, 0.8);
+    transition: 0.3s;
+}
+
+.home-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}

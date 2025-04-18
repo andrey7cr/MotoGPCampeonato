@@ -1,0 +1,27 @@
+﻿@model MotoGPCampeonato.Models.Equipo
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Nuevo Equipo";
+}
+
+<div class="container mt-5">
+    <h2>Registrar Equipo</h2>
+    <form asp-action="Crear" method="post">
+        <div class="mb-3">
+            <label asp-for="Nombre"></label>
+            <input asp-for="Nombre" class="form-control" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Fabricante"></label>
+            <input asp-for="Fabricante" class="form-control" />
+            <span asp-validation-for="Fabricante" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Pais"></label>
+            <input asp-for="Pais" class="form-control" />
+            <span asp-validation-for="Pais" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>

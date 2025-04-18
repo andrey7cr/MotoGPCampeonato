@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Inicio";
+    var rolUsuario = Context.Session.GetString("Rol");
+}
+
+<body class="home-page">
+    <div class="container home-section">
+        <div class="card card-bg-dark text-center p-4 shadow-lg" style="width: 22rem;">
+            <h4 class="mb-3">🏁 Gestión de Equipos</h4>
+            <p>Administra los equipos participantes del campeonato MotoGP.</p>
+            <a href="/Equipos/Index" class="btn btn-outline-light mt-2">Ver Equipos</a>
+        </div>
+    </div>
+</body>
