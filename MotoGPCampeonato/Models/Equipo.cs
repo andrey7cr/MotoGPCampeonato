@@ -16,6 +16,8 @@ namespace MotoGPCampeonato.Models
 
         [StringLength(50)]
         public string Pais { get; set; }
+
+        public int Puntos { get; set; }
     }
 
 }

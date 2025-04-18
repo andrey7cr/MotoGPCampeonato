@@ -20,7 +20,8 @@ namespace MotoGPCampeonato.Controllers
         {
             var pilotos = await _context.Pilotos
                 .Include(p => p.Equipo)
-                .OrderBy(p => p.Equipo.Nombre)    
+                .OrderByDescending(p => p.Puntos)
+                .ThenBy(p => p.Equipo.Nombre)    
                 .ThenBy(p => p.Nombre)            
                 .ToListAsync();
 

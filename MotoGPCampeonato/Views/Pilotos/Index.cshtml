@@ -15,6 +15,7 @@
             <tr>
                 <th>Nombre</th>
                 <th>Equipo</th>
+                <th>Puntos</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -24,6 +25,7 @@
                 <tr>
                     <td>@p.Nombre</td>
                     <td>@p.Equipo?.Nombre</td>
+                    <td>@p.Puntos</td>
                     <td>
                         <a href="/Pilotos/Editar/@p.PilotoId" class="btn btn-sm btn-warning">Editar</a>
                         <form asp-action="Eliminar" method="post" class="d-inline">

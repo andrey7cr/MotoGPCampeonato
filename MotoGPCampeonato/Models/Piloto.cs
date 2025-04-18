@@ -16,6 +16,8 @@ namespace MotoGPCampeonato.Models
 
         [ValidateNever] 
         public Equipo Equipo { get; set; }
+
+        public int Puntos { get; set; }
     }
 
 
