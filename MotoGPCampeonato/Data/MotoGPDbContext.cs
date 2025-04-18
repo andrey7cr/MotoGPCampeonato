@@ -10,6 +10,8 @@ namespace MotoGPCampeonato.Data
         public DbSet<Usuario> Usuarios { get; set; }
         
         public DbSet<Equipo> Equipos { get; set; }
+        public DbSet<Piloto> Pilotos { get; set; }
+
 
     }
 }

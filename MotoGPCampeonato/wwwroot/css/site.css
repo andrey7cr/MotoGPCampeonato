@@ -39,11 +39,12 @@ h2, h4, label, .form-control, .btn {
 }
 
 
-body.home-page {
-    background: url('/images/GP.jpg') no-repeat center center fixed;
+body {
+    background: url('/images/GP.png') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     color: white;
+    font-family: 'Orbitron', sans-serif;
 }
 
 .home-overlay {
@@ -52,14 +53,6 @@ body.home-page {
     border-radius: 20px;
     max-width: 1000px;
     margin: 5vh auto;
-}
-
-body.home-page {
-    background: url('/images/GP.jpg') no-repeat center center fixed;
-    background-size: cover;
-    min-height: 100vh;
-    color: white;
-    font-family: 'Orbitron', sans-serif;
 }
 
 .card-bg-dark {

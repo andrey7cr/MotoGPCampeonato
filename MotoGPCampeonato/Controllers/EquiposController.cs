@@ -16,9 +16,13 @@ namespace MotoGPCampeonato.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var equipos = await _context.Equipos.ToListAsync();
+            var equipos = await _context.Equipos
+                .OrderBy(e => e.Nombre) 
+                .ToListAsync();
+
             return View(equipos);
         }
+
 
         [HttpGet]
         public IActionResult Crear()

@@ -1,0 +1,25 @@
+﻿@model MotoGPCampeonato.Models.Piloto
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Piloto";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">@ViewData["Title"]</h2>
+
+    <form asp-action="@ViewContext.RouteData.Values["Action"]" method="post">
+        <input type="hidden" asp-for="PilotoId" />
+        <div class="mb-3">
+            <label asp-for="Nombre"></label>
+            <input asp-for="Nombre" class="form-control" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="EquipoId">Equipo</label>
+            <select asp-for="EquipoId" class="form-select" asp-items="ViewBag.Equipos"></select>
+            <span asp-validation-for="EquipoId" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="/Pilotos/Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

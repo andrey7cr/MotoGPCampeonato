@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotoGPCampeonato.Data;
 
@@ -10,9 +11,11 @@ using MotoGPCampeonato.Data;
 namespace MotoGPCampeonato.Migrations
 {
     [DbContext(typeof(MotoGPDbContext))]
-    partial class MotoGPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250418172757_AddPiloto")]
+    partial class AddPiloto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,6 +59,9 @@ namespace MotoGPCampeonato.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PilotoId"));
+
+                    b.Property<int>("Edad")
+                        .HasColumnType("int");
 
                     b.Property<int>("EquipoId")
                         .HasColumnType("int");
