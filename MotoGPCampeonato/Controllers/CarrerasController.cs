@@ -169,11 +169,13 @@ namespace MotoGPCampeonato.Controllers
                 var piloto = await _context.Pilotos.Include(p => p.Equipo).FirstOrDefaultAsync(p => p.PilotoId == pilotoId);
                 if (piloto == null) continue;
 
+                // 👉 Asegúrate de guardar los puntos también en ResultadoCarrera
                 _context.ResultadosCarrera.Add(new ResultadoCarrera
                 {
                     CarreraId = carrera.CarreraId,
                     PilotoId = pilotoId,
-                    Posicion = posicion
+                    Posicion = posicion,
+                    Puntos = puntos  // 👈 esto faltaba
                 });
 
                 piloto.Puntos += puntos;
@@ -183,6 +185,7 @@ namespace MotoGPCampeonato.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
 
         [HttpGet]
         public async Task<IActionResult> EditarResultados(int id)
@@ -279,6 +282,48 @@ namespace MotoGPCampeonato.Controllers
                 pais = gp.Circuito.Pais.Nombre
             });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerEventos()
+        {
+            var carreras = await _context.Carreras
+                .Include(c => c.GranPremio)
+                .ThenInclude(gp => gp.Circuito)
+                .ToListAsync();
+
+            var eventos = carreras.Select(c => new
+            {
+                title = $"{c.GranPremio?.Nombre} ({c.Tipo})",
+                start = c.Fecha.ToString("yyyy-MM-dd"),
+                url = Url.Action("Detalles", "Carreras", new { id = c.CarreraId })
+            });
+
+            return Json(eventos);
+        }
+
+        public IActionResult Calendario()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Detalles(int id)
+        {
+            var carrera = await _context.Carreras
+                .Include(c => c.GranPremio)
+                    .ThenInclude(gp => gp.Circuito)
+                        .ThenInclude(c => c.Pais)
+                .Include(c => c.Resultados)
+                    .ThenInclude(r => r.Piloto)
+                        .ThenInclude(p => p.Equipo)
+                .FirstOrDefaultAsync(c => c.CarreraId == id);
+
+            if (carrera == null)
+                return NotFound();
+
+            return View(carrera);
+        }
+
+
 
     }
 }

@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Calendario de Carreras";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mb-4">Calendario de Carreras</h2>
+<div id="calendar"></div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'es',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,listMonth'
+                },
+                events: '/Carreras/ObtenerEventos' // Este endpoint lo crearás
+            });
+
+            calendar.render();
+        });
+    </script>
+}

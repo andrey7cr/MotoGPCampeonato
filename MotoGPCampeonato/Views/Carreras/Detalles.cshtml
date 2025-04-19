@@ -1,0 +1,61 @@
+﻿@model MotoGPCampeonato.Models.Carrera
+@{
+    ViewData["Title"] = "Detalles de la Carrera";
+    var trofeos = new[] { "🥇", "🥈", "🥉" };
+}
+
+<h2>@Model.GranPremio?.Nombre (@Model.Tipo)</h2>
+<p><strong>Fecha:</strong> @Model.Fecha.ToShortDateString()</p>
+<p><strong>Circuito:</strong> @Model.GranPremio?.Circuito?.Nombre</p>
+<p><strong>País:</strong> @Model.GranPremio?.Circuito?.Pais?.Nombre</p>
+
+@if (Model.Resultados != null && Model.Resultados.Any())
+{
+    <h4 class="mt-4">🏆 Podio</h4>
+    <div class="row text-center mb-4">
+        @for (int i = 0; i < Math.Min(3, Model.Resultados.Count); i++)
+        {
+            var r = Model.Resultados[i];
+            <div class="col-md-4">
+                <div class="card border-light shadow-sm">
+                    <div class="card-body">
+                        <h1>@trofeos[i]</h1>
+                        <h5 class="card-title">@r.Piloto?.Nombre</h5>
+                        <p class="card-text text-muted">@r.Piloto?.Equipo?.Nombre</p>
+                        <span class="badge bg-success">Puntos: @r.Puntos</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <details class="mt-4">
+        <summary><strong>Ver todos los resultados</strong></summary>
+        <table class="table table-bordered table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Posición</th>
+                    <th>Piloto</th>
+                    <th>Equipo</th>
+                    <th>Puntos</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Resultados.Count; i++)
+                {
+                    var resultado = Model.Resultados[i];
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@resultado.Piloto?.Nombre</td>
+                        <td>@resultado.Piloto?.Equipo?.Nombre</td>
+                        <td>@resultado.Puntos</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </details>
+}
+else
+{
+    <p class="text-warning">No hay resultados registrados aún.</p>
+}

@@ -47,8 +47,10 @@ namespace MotoGPCampeonato.Controllers
                 {
                     CarreraId = carrera.CarreraId,
                     PilotoId = pilotoId,
-                    Posicion = posicion
+                    Posicion = posicion,
+                    Puntos = puntos 
                 });
+
 
                 piloto.Puntos += puntos;
                 piloto.Equipo.Puntos += puntos;

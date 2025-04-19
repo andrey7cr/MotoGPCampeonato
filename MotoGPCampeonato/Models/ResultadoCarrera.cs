@@ -11,6 +11,8 @@
         public Piloto Piloto { get; set; }
 
         public int Posicion { get; set; }
+
+        public int Puntos { get; set; }
     }
 
 }
