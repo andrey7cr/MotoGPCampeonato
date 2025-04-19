@@ -20,10 +20,6 @@ namespace MotoGPCampeonato.Models
         public GranPremio GranPremio { get; set; }
 
         [Required]
-        [StringLength(100)]
-        public string NombreCarrera { get; set; }
-
-        [Required]
         public DateTime Fecha { get; set; }
 
         [Required]
@@ -32,6 +28,7 @@ namespace MotoGPCampeonato.Models
         [ValidateNever]
         public List<ResultadoCarrera> Resultados { get; set; }
     }
+
 
 
 }

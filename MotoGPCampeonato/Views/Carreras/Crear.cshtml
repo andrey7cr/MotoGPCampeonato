@@ -8,12 +8,6 @@
 
 <form asp-action="Crear" method="post">
     <div class="mb-3">
-        <label asp-for="NombreCarrera" class="form-label"></label>
-        <input asp-for="NombreCarrera" class="form-control" />
-        <span asp-validation-for="NombreCarrera" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
         <label asp-for="GranPremioId" class="form-label">Gran Premio</label>
         <select asp-for="GranPremioId" asp-items="ViewBag.GrandesPremios" class="form-select" id="gpSelect"></select>
         <span asp-validation-for="GranPremioId" class="text-danger"></span>

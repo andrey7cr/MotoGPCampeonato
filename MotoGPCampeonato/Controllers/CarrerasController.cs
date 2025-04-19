@@ -22,6 +22,7 @@ namespace MotoGPCampeonato.Controllers
                 return RedirectToAction("Login", "Account");
 
             var carreras = await _context.Carreras
+                .OrderBy(c => c.Fecha)
                 .Include(c => c.GranPremio)
                 .ThenInclude(gp => gp.Circuito)
                 .ThenInclude(c => c.Pais)
@@ -182,6 +183,70 @@ namespace MotoGPCampeonato.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EditarResultados(int id)
+        {
+            var carrera = await _context.Carreras
+                .Include(c => c.Resultados)
+                .Include(c => c.GranPremio)
+                    .ThenInclude(gp => gp.Circuito)
+                        .ThenInclude(c => c.Pais)
+                .FirstOrDefaultAsync(c => c.CarreraId == id);
+
+            if (carrera == null) return NotFound();
+
+            var resultados = await _context.ResultadosCarrera
+                .Include(r => r.Piloto)
+                    .ThenInclude(p => p.Equipo)
+                .Where(r => r.CarreraId == id)
+                .OrderBy(r => r.Posicion)
+                .ToListAsync();
+
+            ViewBag.Carrera = carrera;
+            ViewBag.TodosLosPilotos = await _context.Pilotos
+                .Include(p => p.Equipo)
+                .OrderBy(p => p.Equipo.Nombre)
+                .ThenBy(p => p.Nombre)
+                .ToListAsync();
+
+            return View(resultados);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditarResultados(int carreraId, List<int> pilotoIds)
+        {
+            var carrera = await _context.Carreras
+                .Include(c => c.Resultados)
+                .Include(c => c.GranPremio)
+                .FirstOrDefaultAsync(c => c.CarreraId == carreraId);
+
+            if (carrera == null || pilotoIds == null || pilotoIds.Count == 0)
+                return NotFound();
+
+            // Eliminar resultados anteriores
+            _context.ResultadosCarrera.RemoveRange(carrera.Resultados);
+
+            // Agregar nuevos con las posiciones actualizadas
+            for (int i = 0; i < pilotoIds.Count; i++)
+            {
+                var resultado = new ResultadoCarrera
+                {
+                    CarreraId = carreraId,
+                    PilotoId = pilotoIds[i],
+                    Posicion = i + 1
+                };
+
+                _context.ResultadosCarrera.Add(resultado);
+            }
+
+            await _context.SaveChangesAsync();
+
+            // ⚠️ Podés invocar aquí un método que recalcula los puntos
+            return RedirectToAction("Index");
+        }
+
 
         // Lógica de puntos
         private int ObtenerPuntos(TipoCarrera tipo, int posicion)
