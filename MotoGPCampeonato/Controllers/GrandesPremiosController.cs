@@ -22,7 +22,11 @@ namespace MotoGPCampeonato.Controllers
         public async Task<IActionResult> Crear()
         {
             ViewBag.Circuitos = new SelectList(await _context.Circuitos.ToListAsync(), "CircuitoId", "Nombre");
-            ViewBag.Paises = new SelectList(_context.Paises, "PaisId", "Nombre");
+            ViewBag.Paises = new SelectList(
+                await _context.Paises.OrderBy(p => p.Nombre).ToListAsync(),
+                "PaisId", "Nombre"
+            );
+
             return View();
         }
 
@@ -32,6 +36,10 @@ namespace MotoGPCampeonato.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Circuitos = new SelectList(await _context.Circuitos.ToListAsync(), "CircuitoId", "Nombre", gp.CircuitoId);
+                ViewBag.Paises = new SelectList(
+                await _context.Paises.OrderBy(p => p.Nombre).ToListAsync(),
+                "PaisId", "Nombre"
+            );
                 return View(gp);
             }
             _context.Add(gp); await _context.SaveChangesAsync(); return RedirectToAction(nameof(Index));
@@ -95,6 +103,22 @@ namespace MotoGPCampeonato.Controllers
             _context.GrandesPremios.Remove(gp); await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ObtenerPaisPorCircuito(int circuitoId)
+        {
+            var circuito = await _context.Circuitos
+                .Include(c => c.Pais)
+                .FirstOrDefaultAsync(c => c.CircuitoId == circuitoId);
+
+            if (circuito == null) return NotFound();
+
+            return Json(new
+            {
+                paisId = circuito.PaisId
+            });
+        }
+
     }
 
 }

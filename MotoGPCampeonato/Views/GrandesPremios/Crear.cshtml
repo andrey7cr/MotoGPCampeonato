@@ -15,16 +15,72 @@
 
     <div class="mb-3">
         <label asp-for="CircuitoId" class="form-label">Circuito</label>
-        <select asp-for="CircuitoId" asp-items="ViewBag.Circuitos" class="form-select"></select>
+        <select asp-for="CircuitoId" asp-items="ViewBag.Circuitos" class="form-select" id="circuitoSelect"></select>
         <span asp-validation-for="CircuitoId" class="text-danger"></span>
     </div>
+
+    
     <div class="mb-3">
-        <label asp-for="PaisId" class="form-label">País</label>
-        <select asp-for="PaisId" asp-items="ViewBag.Paises" class="form-select"></select>
-        <span asp-validation-for="PaisId" class="text-danger"></span>
+        <label class="form-label">País</label>
+        <select class="form-select" id="paisSelect" disabled>
+            <option value="">-- Seleccionar país --</option>
+            @foreach (var pais in (SelectList)ViewBag.Paises)
+            {
+                <option value="@pais.Value">@pais.Text</option>
+            }
+        </select>
     </div>
 
+    
+    <input type="hidden" asp-for="PaisId" id="paisIdHidden" />
+    <span asp-validation-for="PaisId" class="text-danger"></span>
 
     <button type="submit" class="btn btn-primary">Guardar</button>
     <a href="/GrandesPremios/Index" class="btn btn-secondary">Cancelar</a>
 </form>
+
+@section Scripts {
+    <script>
+        function actualizarPais(paisId) {
+            console.log("PaisId recibido:", paisId);
+            const select = $("#paisSelect");
+            let encontrado = false;
+
+            select.find("option").each(function () {
+                if ($(this).val() === paisId.toString()) {
+                    $(this).prop("selected", true);
+                    encontrado = true;
+                    console.log("País encontrado y seleccionado");
+                }
+            });
+
+            if (!encontrado) {
+                console.warn("País NO encontrado en las opciones del <select>");
+            }
+
+            $("#paisIdHidden").val(paisId.toString());
+        }
+
+        $(document).ready(function () {
+            $("#circuitoSelect").on("change", function () {
+                const circuitoId = $(this).val();
+                if (circuitoId) {
+                    $.get("/GrandesPremios/ObtenerPaisPorCircuito", { circuitoId: circuitoId }, function (data) {
+                        console.log("Respuesta AJAX:", data);
+                        actualizarPais(data.paisId);
+                    });
+                } else {
+                    $("#paisSelect").val("");
+                    $("#paisIdHidden").val("");
+                }
+            });
+
+            const circuitoSeleccionado = $("#circuitoSelect").val();
+            if (circuitoSeleccionado) {
+                $.get("/GrandesPremios/ObtenerPaisPorCircuito", { circuitoId: circuitoSeleccionado }, function (data) {
+                    actualizarPais(data.paisId);
+                });
+            }
+        });
+    </script>
+}
