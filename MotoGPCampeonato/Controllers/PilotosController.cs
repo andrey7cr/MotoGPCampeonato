@@ -88,6 +88,17 @@ namespace MotoGPCampeonato.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Detalles(int id)
+        {
+            var piloto = await _context.Pilotos
+                .Include(p => p.Equipo)
+                .FirstOrDefaultAsync(p => p.PilotoId == id);
+
+            if (piloto == null) return NotFound();
+
+            return View(piloto);
+        }
+
     }
 
 }

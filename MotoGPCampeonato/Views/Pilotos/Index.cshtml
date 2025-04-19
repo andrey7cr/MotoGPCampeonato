@@ -27,6 +27,9 @@
                     <td>@p.Equipo?.Nombre</td>
                     <td>@p.Puntos</td>
                     <td>
+                        <a href="/Pilotos/Detalles/@p.PilotoId" class="btn btn-sm btn-info">
+                            <i class="bi bi-eye-fill"></i> Ver
+                        </a>
                         <a href="/Pilotos/Editar/@p.PilotoId" class="btn btn-sm btn-warning">Editar</a>
                         <form asp-action="Eliminar" method="post" class="d-inline">
                             <input type="hidden" name="id" value="@p.PilotoId" />
