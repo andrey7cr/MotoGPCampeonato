@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotoGPCampeonato.Data;
 
@@ -11,9 +12,11 @@ using MotoGPCampeonato.Data;
 namespace MotoGPCampeonato.Migrations
 {
     [DbContext(typeof(MotoGPDbContext))]
-    partial class MotoGPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250419230144_AddSesionesPractica")]
+    partial class AddSesionesPractica
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -240,18 +243,18 @@ namespace MotoGPCampeonato.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Observaciones")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                    b.Property<int>("GranPremioId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PilotoId")
                         .HasColumnType("int");
 
-                    b.Property<double>("TiempoVuelta")
+                    b.Property<double>("TiempoEnSegundos")
                         .HasColumnType("float");
 
                     b.HasKey("SesionPracticaId");
+
+                    b.HasIndex("GranPremioId");
 
                     b.HasIndex("PilotoId");
 
@@ -382,11 +385,19 @@ namespace MotoGPCampeonato.Migrations
 
             modelBuilder.Entity("MotoGPCampeonato.Models.SesionPractica", b =>
                 {
+                    b.HasOne("MotoGPCampeonato.Models.GranPremio", "GranPremio")
+                        .WithMany()
+                        .HasForeignKey("GranPremioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MotoGPCampeonato.Models.Piloto", "Piloto")
                         .WithMany()
                         .HasForeignKey("PilotoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("GranPremio");
 
                     b.Navigation("Piloto");
                 });

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MotoGPCampeonato.Models.SesionPractica>
+
+@{
+    ViewData["Title"] = "Sesiones de Práctica";
+}
+
+<h2 class="mb-4">Sesiones de Práctica</h2>
+
+<a class="btn btn-success mb-3" href="/SesionesPractica/Crear">
+    <i class="bi bi-plus-circle"></i> Nueva sesión
+</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Piloto</th>
+            <th>Equipo</th>
+            <th>Tiempo (s)</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var s in Model)
+        {
+            <tr>
+                <td>@s.Fecha.ToShortDateString()</td>
+                <td>@s.Piloto?.Nombre</td>
+                <td>@s.Piloto?.Equipo?.Nombre</td>
+                <td>@s.TiempoVuelta</td>
+                <td>
+                    <a class="btn btn-sm btn-warning" href="/SesionesPractica/Editar/@s.SesionPracticaId">
+                        <i class="bi bi-pencil-square"></i> Editar
+                    </a>
+                    <form asp-action="Eliminar" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@s.SesionPracticaId" />
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Deseas eliminar esta sesión?');">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

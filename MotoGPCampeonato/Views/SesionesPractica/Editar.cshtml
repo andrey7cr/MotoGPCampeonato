@@ -1,0 +1,39 @@
+﻿@model MotoGPCampeonato.Models.SesionPractica
+@{
+    ViewData["Title"] = "Editar Sesión de Práctica";
+}
+
+<h2 class="mt-4 mb-3">Editar Sesión</h2>
+
+<form asp-action="Editar" method="post">
+    <input type="hidden" asp-for="SesionPracticaId" />
+
+    <div class="mb-3">
+        <label asp-for="Fecha" class="form-label"></label>
+        <input asp-for="Fecha" type="date" class="form-control" />
+        <span asp-validation-for="Fecha" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="PilotoId" class="form-label">Piloto</label>
+        <select asp-for="PilotoId" asp-items="ViewBag.Pilotos" class="form-select"></select>
+        <span asp-validation-for="PilotoId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TiempoVuelta" class="form-label">Tiempo (en segundos)</label>
+        <input asp-for="TiempoVuelta" class="form-control" />
+        <span asp-validation-for="TiempoVuelta" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Observaciones" class="form-label"></label>
+        <textarea asp-for="Observaciones" class="form-control"></textarea>
+        <span asp-validation-for="Observaciones" class="text-danger"></span>
+    </div>
+
+    <div class="text-end">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Guardar Cambios</button>
+        <a href="/SesionesPractica/Index" class="btn btn-secondary"><i class="bi bi-arrow-left-circle"></i> Cancelar</a>
+    </div>
+</form>
