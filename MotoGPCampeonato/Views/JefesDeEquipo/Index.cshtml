@@ -1,0 +1,45 @@
+﻿@model IEnumerable<MotoGPCampeonato.Models.JefeDeEquipo>
+@{
+    ViewData["Title"] = "Jefes de Equipo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mt-4">Jefes de Equipo</h2>
+
+<div class="text-end mb-3">
+    <a href="/JefesDeEquipo/Crear" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Nuevo Jefe
+    </a>
+</div>
+
+<table class="table table-dark table-hover">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Equipo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var jefe in Model)
+        {
+            <tr>
+                <td>@jefe.Usuario?.Nombre</td>
+                <td>@jefe.Usuario?.Correo</td>
+                <td>@jefe.Equipo?.Nombre</td>
+                <td>
+                    <a href="/JefesDeEquipo/Editar/@jefe.JefeDeEquipoId" class="btn btn-sm btn-warning">
+                        <i class="bi bi-pencil-square"></i> Editar
+                    </a>
+                    <form asp-action="Eliminar" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="@jefe.JefeDeEquipoId" />
+                        <button class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar jefe de equipo?');">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

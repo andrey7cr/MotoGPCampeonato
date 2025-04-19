@@ -1,0 +1,29 @@
+﻿@model MotoGPCampeonato.Models.JefeDeEquipo
+@{
+    ViewData["Title"] = "Nuevo Jefe de Equipo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Crear" method="post">
+    <input type="hidden" asp-for="JefeDeEquipoId" />
+    <div class="mb-3">
+        <label asp-for="Nombre" class="form-label"></label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="EquipoId" class="form-label">Equipo</label>
+        <select asp-for="EquipoId" asp-items="ViewBag.Equipos" class="form-select"></select>
+        <span asp-validation-for="EquipoId" class="text-danger"></span>
+    </div>
+
+    <div class="text-end">
+        <button class="btn btn-success">
+            <i class="bi bi-check-circle"></i> Guardar
+        </button>
+        <a href="/JefesDeEquipo/Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>

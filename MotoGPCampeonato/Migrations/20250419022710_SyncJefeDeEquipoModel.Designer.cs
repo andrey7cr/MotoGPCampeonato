@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotoGPCampeonato.Data;
 
@@ -11,9 +12,11 @@ using MotoGPCampeonato.Data;
 namespace MotoGPCampeonato.Migrations
 {
     [DbContext(typeof(MotoGPDbContext))]
-    partial class MotoGPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250419022710_SyncJefeDeEquipoModel")]
+    partial class SyncJefeDeEquipoModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,7 +147,7 @@ namespace MotoGPCampeonato.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("UsuarioId")
+                    b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("JefeDeEquipoId");
@@ -311,7 +314,9 @@ namespace MotoGPCampeonato.Migrations
 
                     b.HasOne("MotoGPCampeonato.Models.Usuario", "Usuario")
                         .WithMany()
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Equipo");
 

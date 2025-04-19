@@ -5,7 +5,7 @@ namespace MotoGPCampeonato.Models
     public enum RolUsuario
     {
         Administrador,
-        Entrenador,
+        JefeDeEquipo,
         Piloto
     }
 
@@ -26,6 +26,8 @@ namespace MotoGPCampeonato.Models
 
         [Required]
         public RolUsuario Rol { get; set; }
+        public int? EquipoId { get; set; } 
+        public Equipo? Equipo { get; set; }
     }
 
 }

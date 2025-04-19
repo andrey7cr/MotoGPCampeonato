@@ -16,6 +16,8 @@ namespace MotoGPCampeonato.Data
         public DbSet<Circuito> Circuitos { get; set; }
         public DbSet<GranPremio> GrandesPremios { get; set; }
         public DbSet<Pais> Paises { get; set; }
+        public DbSet<JefeDeEquipo> JefesDeEquipo { get; set; }
+
 
 
 

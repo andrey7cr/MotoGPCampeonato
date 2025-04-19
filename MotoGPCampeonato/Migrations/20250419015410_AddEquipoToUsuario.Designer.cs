@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotoGPCampeonato.Data;
 
@@ -11,9 +12,11 @@ using MotoGPCampeonato.Data;
 namespace MotoGPCampeonato.Migrations
 {
     [DbContext(typeof(MotoGPDbContext))]
-    partial class MotoGPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250419015410_AddEquipoToUsuario")]
+    partial class AddEquipoToUsuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,34 +129,6 @@ namespace MotoGPCampeonato.Migrations
                     b.HasIndex("PaisId");
 
                     b.ToTable("GrandesPremios");
-                });
-
-            modelBuilder.Entity("MotoGPCampeonato.Models.JefeDeEquipo", b =>
-                {
-                    b.Property<int>("JefeDeEquipoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("JefeDeEquipoId"));
-
-                    b.Property<int>("EquipoId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.HasKey("JefeDeEquipoId");
-
-                    b.HasIndex("EquipoId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("JefesDeEquipo");
                 });
 
             modelBuilder.Entity("MotoGPCampeonato.Models.Pais", b =>
@@ -299,23 +274,6 @@ namespace MotoGPCampeonato.Migrations
                     b.Navigation("Circuito");
 
                     b.Navigation("Pais");
-                });
-
-            modelBuilder.Entity("MotoGPCampeonato.Models.JefeDeEquipo", b =>
-                {
-                    b.HasOne("MotoGPCampeonato.Models.Equipo", "Equipo")
-                        .WithMany()
-                        .HasForeignKey("EquipoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MotoGPCampeonato.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
-
-                    b.Navigation("Equipo");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("MotoGPCampeonato.Models.Piloto", b =>
