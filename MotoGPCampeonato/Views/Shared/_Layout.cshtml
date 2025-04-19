@@ -46,10 +46,20 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/Carreras/Calendario"><i class="bi bi-calendar-week"></i> Calendario</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Estadisticas/EficienciaPilotos"><i class="bi bi-bar-chart-fill"></i> Eficiencia Pilotos</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="statisticDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-bar-chart-fill"></i> Estadísticas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="statisticDropdown">
+                            <li>
+                                <a class="dropdown-item" href="/Estadisticas/EficienciaPilotos">
+                                    <i class="bi bi-bar-chart-fill"></i> Eficiencia Pilotos
+                                </a>
+                            </li>
+                            <li><a class="dropdown-item" href="/Estadisticas/PilotoVsPiloto"><i class="bi bi-bar-chart-line"></i> Comparar Pilotos</a></li>
+                            <li><a class="dropdown-item" href="/Estadisticas/PodiosPorPiloto"><i class="bi bi-bar-chart-fill"></i> Podios por Piloto</a></li>
+                        </ul>
                     </li>
-
 
                     @if (rol == "Administrador")
                     {

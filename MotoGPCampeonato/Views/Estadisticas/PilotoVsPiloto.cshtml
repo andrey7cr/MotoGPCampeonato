@@ -1,0 +1,53 @@
+﻿@{
+        ViewData["Title"] = "Comparativa Piloto vs Piloto";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2 class="mb-4">Comparativa Piloto vs Piloto</h2>
+
+<form asp-action="PilotoVsPiloto" method="post" class="row g-3 mb-4">
+    <div class="col-md-5">
+        <label for="pilotoAId" class="form-label">Piloto A</label>
+        <select class="form-select" name="pilotoAId" asp-items="ViewBag.Pilotos"></select>
+    </div>
+    <div class="col-md-5">
+        <label for="pilotoBId" class="form-label">Piloto B</label>
+        <select class="form-select" name="pilotoBId" asp-items="ViewBag.Pilotos"></select>
+    </div>
+    <div class="col-md-2 align-self-end">
+        <button type="submit" class="btn btn-primary w-100">Comparar</button>
+    </div>
+</form>
+
+@if (ViewBag.PilotoANombre != null && ViewBag.PilotoBNombre != null)
+{
+    <canvas id="comparativaPilotos" height="150" style="background: linear-gradient(135deg, rgba(245,245,245,0.9) 0%, rgba(230,230,250,0.9) 100%);backdrop-filter: blur(2px);border: 1px solid rgba(0,0,0,0.1);"> 
+
+    </canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('comparativaPilotos').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['@ViewBag.PilotoANombre', '@ViewBag.PilotoBNombre'],
+                datasets: [{
+                    label: 'Puntos',
+                    data: [@ViewBag.PilotoAPuntos, @ViewBag.PilotoBPuntos],
+                    backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                    borderColor: 'rgba(255, 0, 0, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}
