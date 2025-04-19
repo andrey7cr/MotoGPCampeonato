@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MotoGPCampeonato.Data;
 using MotoGPCampeonato.Models;
+using X.PagedList.Extensions;
+
+
 
 namespace MotoGPCampeonato.Controllers
 {
@@ -16,20 +19,26 @@ namespace MotoGPCampeonato.Controllers
         }
 
         // GET: Carreras
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
+           
+
             if (HttpContext.Session.GetInt32("UsuarioId") == null)
                 return RedirectToAction("Login", "Account");
 
-            var carreras = await _context.Carreras
-                .OrderBy(c => c.Fecha)
-                .Include(c => c.GranPremio)
-                .ThenInclude(gp => gp.Circuito)
-                .ThenInclude(c => c.Pais)
-                .Include(c => c.Resultados)
-                .ToListAsync();
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
 
-            return View(carreras);
+            var carrerasQuery = _context.Carreras
+                .Include(c => c.GranPremio)
+                    .ThenInclude(gp => gp.Circuito)
+                        .ThenInclude(c => c.Pais)
+                .Include(c => c.Resultados)
+                .OrderBy(c => c.Fecha);
+
+            var carrerasPaged = carrerasQuery.ToPagedList(pageNumber, pageSize);
+
+            return View(carrerasPaged);
         }
 
         // GET: Carreras/Crear

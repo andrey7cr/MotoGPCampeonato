@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MotoGPCampeonato.Models.Carrera>
+﻿@model X.PagedList.IPagedList<MotoGPCampeonato.Models.Carrera>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Carreras";
@@ -21,7 +21,7 @@
         <tr>
             <th>Fecha</th>
             <th>Tipo</th>
-            <th>Circuito</th>
+            <th>Gran Premio</th>
             <th>País</th>
             <th>Resultados</th>
             @if (rol == "Administrador")
@@ -31,17 +31,21 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var carrera in Model.OrderByDescending(c => c.Fecha))
+        @{
+            int itemsMostrados = 0;
+        }
+
+        @foreach (var carrera in Model)
         {
+            itemsMostrados++;
+            var tieneResultados = carrera.Resultados?.Any() == true;
+
             <tr>
-                <td>@carrera.Fecha.ToShortDateString()</td>
+                <td>@carrera.Fecha.ToString("dd/MM/yy")</td>
                 <td>@carrera.Tipo</td>
-                <td>@carrera.GranPremio.Circuito?.Nombre</td>
-                <td>@carrera.GranPremio.Circuito?.Pais?.Nombre</td>
+                <td>@carrera.GranPremio?.Nombre</td>
+                <td>@carrera.GranPremio?.Circuito?.Pais?.Nombre</td>
                 <td>
-                    @{
-                        var tieneResultados = carrera.Resultados?.Any() == true;
-                    }
                     @if (tieneResultados)
                     {
                         <span class="badge bg-success">Registrados</span>
@@ -67,7 +71,6 @@
                             </a>
                         }
 
-
                         <a href="/Carreras/Editar/@carrera.CarreraId" class="btn btn-sm btn-warning mb-1">
                             <i class="bi bi-pencil-square"></i> Editar
                         </a>
@@ -85,3 +88,17 @@
         }
     </tbody>
 </table>
+
+@using X.PagedList.Mvc.Core
+
+<div class="d-flex justify-content-center mt-4">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+            new PagedListRenderOptions
+    {
+        Display = PagedListDisplayMode.IfNeeded,
+        MaximumPageNumbersToDisplay = 5,
+        UlElementClasses = new[] { "pagination" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" }
+    })
+</div>

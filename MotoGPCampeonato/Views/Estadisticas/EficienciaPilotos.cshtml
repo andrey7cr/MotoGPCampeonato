@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Eficiencia de Pilotos";
+}
+
+<h2>Eficiencia de Pilotos</h2>
+<canvas id="graficoEficiencia" width="800" height="400"></canvas>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('graficoEficiencia').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [@Html.Raw(ViewBag.Nombres)],
+                datasets: [{
+                    label: 'Eficiencia (%)',
+                    data: [@Html.Raw(ViewBag.Eficiencia)],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            callback: value => value + '%'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Porcentaje de Eficiencia'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
