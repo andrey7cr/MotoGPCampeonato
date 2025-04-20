@@ -58,12 +58,16 @@ namespace MotoGPCampeonato.Controllers
             {
                 HttpContext.Session.SetInt32("UsuarioId", usuario.UsuarioId);
                 HttpContext.Session.SetString("Rol", usuario.Rol.ToString());
+
+                TempData["AnimacionInicio"] = true;
+
                 return RedirectToAction("Index", "Home");
             }
-            ViewBag.Error = "Correo o contraseña incorrectos.";
-            return RedirectToAction("Index", "Home");
 
+            ViewBag.Error = "Correo o contraseña incorrectos.";
+            return View();
         }
+
 
         public IActionResult Logout()
         {
@@ -109,7 +113,9 @@ namespace MotoGPCampeonato.Controllers
                 TempData["Mensaje"] = $"Error al enviar el correo: {ex.Message}";
             }
 
-            return RedirectToAction("Login");
+            TempData["AnimacionInicio"] = true;
+            return RedirectToAction("Index", "Home");
+
         }
 
 
