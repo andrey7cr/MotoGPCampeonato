@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MotoGPCampeonato.Data;
+using OfficeOpenXml;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,12 @@ builder.Services.AddDbContext<MotoGPDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSession();
+
+
+
+
+ExcelPackage.License.SetNonCommercialPersonal("Andrey Berrocal-UNED");
+
 
 
 var app = builder.Build();

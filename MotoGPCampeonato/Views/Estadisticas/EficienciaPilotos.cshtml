@@ -7,6 +7,25 @@
 <canvas id="graficoEficiencia" width="800" height="400" style="background: linear-gradient(135deg, rgba(245,245,245,0.9) 0%, rgba(230,230,250,0.9) 100%);backdrop-filter: blur(2px);border: 1px solid rgba(0,0,0,0.1);">
 </canvas>
 
+<div class="mt-4 text-end">
+    <a href="@Url.Action("ExportarPdf", "Estadisticas")"
+       class="btn btn-danger"
+       onclick="mostrarToast('Se ha iniciado la descarga del PDF')">
+        <i class="bi bi-file-earmark-pdf-fill"></i> Exportar a PDF
+    </a>
+</div>
+
+<div class="mt-2 text-end">
+    <a href="@Url.Action("ExportarExcel", "Estadisticas")"
+       class="btn btn-success"
+       onclick="mostrarToast('Se ha iniciado la descarga del archivo Excel')">
+        <i class="bi bi-file-earmark-excel-fill"></i> Exportar a Excel
+    </a>
+</div>
+
+
+
+
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
