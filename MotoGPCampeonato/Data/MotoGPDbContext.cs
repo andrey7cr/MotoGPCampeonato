@@ -18,6 +18,8 @@ namespace MotoGPCampeonato.Data
         public DbSet<Pais> Paises { get; set; }
         public DbSet<JefeDeEquipo> JefesDeEquipo { get; set; }
         public DbSet<SesionPractica> SesionesPractica { get; set; }
+        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+
 
 
 

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MotoGPCampeonato.Data;
+using MotoGPCampeonato.Services;
 using OfficeOpenXml;
 
 
@@ -18,6 +19,8 @@ builder.Services.AddSession();
 
 ExcelPackage.License.SetNonCommercialPersonal("Andrey Berrocal-UNED");
 
+//Servicio Email
+builder.Services.AddTransient<EmailService>();
 
 
 var app = builder.Build();

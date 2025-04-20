@@ -5,6 +5,7 @@ using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using System.Net;
+using MotoGPCampeonato.Services;
 
 
 
@@ -15,13 +16,15 @@ namespace MotoGPCampeonato.Controllers
 
         private readonly MotoGPDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly EmailService _emailService;
 
-        public AccountController(MotoGPDbContext context, IConfiguration configuration)
+        public AccountController(MotoGPDbContext context, IConfiguration configuration, EmailService emailService)
         {
             _context = context;
             _configuration = configuration;
+            _emailService = emailService;
         }
-           
+
 
         // GET: /Account/Register
         [HttpGet]
@@ -78,7 +81,6 @@ namespace MotoGPCampeonato.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RecuperarContrasena(string email)
         {
-            // Verifica si el usuario existe
             var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Correo == email);
             if (usuario == null)
             {
@@ -86,46 +88,21 @@ namespace MotoGPCampeonato.Controllers
                 return RedirectToAction("Login");
             }
 
-            // Genera y hashea una nueva contraseña temporal
+            // Generar nueva contraseña temporal
             var nuevaContrasena = Guid.NewGuid().ToString().Substring(0, 8);
-            var nuevaContrasenaHasheada = BCrypt.Net.BCrypt.HashPassword(nuevaContrasena);
-            usuario.Contrasena = nuevaContrasenaHasheada;
+            usuario.Contrasena = BCrypt.Net.BCrypt.HashPassword(nuevaContrasena);
             await _context.SaveChangesAsync();
 
-            // Obtiene configuración SMTP desde appsettings o variables de entorno
-            var smtpUser = _configuration["Smtp:User"];
-            var smtpPass = _configuration["Smtp:Password"];
-            var smtpHost = _configuration["Smtp:Host"];
-            var smtpPortStr = _configuration["Smtp:Port"];
-
-            if (string.IsNullOrEmpty(smtpUser) || string.IsNullOrEmpty(smtpPass) ||
-                string.IsNullOrEmpty(smtpHost) || string.IsNullOrEmpty(smtpPortStr))
-            {
-                TempData["Mensaje"] = "Configuración SMTP incompleta. Contacte al administrador.";
-                return RedirectToAction("Login");
-            }
-
-            if (!int.TryParse(smtpPortStr, out var smtpPort)) smtpPort = 587;
-
-            
-            var mail = new MailMessage();
             try
             {
-                mail.From = new MailAddress(smtpUser);
-                mail.To.Add(email);
-                mail.Subject = "Recuperación de contraseña - MotoGP Championship";
-                mail.Body = $"Hola {usuario.Nombre},\n\nTu nueva contraseña temporal es: {nuevaContrasena}\n\n" +
-                            $"Por favor, inicia sesión y cámbiala lo antes posible.";
+                // Enviar correo
+                await _emailService.SendEmailAsync(
+                    email,
+                    "Recuperación de contraseña - MotoGP Championship",
+                    $"Hola {usuario.Nombre},<br/><br/>Tu nueva contraseña temporal es: <strong>{nuevaContrasena}</strong><br/><br/>Por favor, inicia sesión y cámbiala lo antes posible."
+                );
 
-                using var smtp = new SmtpClient(smtpHost)
-                {
-                    Port = smtpPort,
-                    Credentials = new NetworkCredential(smtpUser, smtpPass),
-                    EnableSsl = true
-                };
-
-                smtp.Send(mail);
-                TempData["Mensaje"] = "Se ha enviado una nueva contraseña temporal al correo registrado.";
+                TempData["Mensaje"] = "Se ha enviado una nueva contraseña al correo registrado.";
             }
             catch (Exception ex)
             {
@@ -134,6 +111,8 @@ namespace MotoGPCampeonato.Controllers
 
             return RedirectToAction("Login");
         }
+
+
 
 
 
