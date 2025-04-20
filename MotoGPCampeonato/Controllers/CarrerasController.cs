@@ -23,9 +23,6 @@ namespace MotoGPCampeonato.Controllers
         {
            
 
-            if (HttpContext.Session.GetInt32("UsuarioId") == null)
-                return RedirectToAction("Login", "Account");
-
             int pageSize = 10;
             int pageNumber = page ?? 1;
 
