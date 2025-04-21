@@ -2,13 +2,17 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Pilotos";
+    var rol = Context.Session.GetString("Rol");
 }
 
 <div class="container mt-4">
     <h2 class="mb-3">Pilotos Registrados</h2>
-    <div class="text-end mb-3">
-        <a href="/Pilotos/Crear" class="btn btn-primary">+ Nuevo Piloto</a>
-    </div>
+    @if (rol == "Administrador")
+    {
+        <div class="text-end mb-3">
+            <a href="/Pilotos/Crear" class="btn btn-primary">+ Nuevo Piloto</a>
+        </div>
+    }
 
     <table class="table table-dark table-bordered">
         <thead>
@@ -30,11 +34,14 @@
                         <a href="/Pilotos/Detalles/@p.PilotoId" class="btn btn-sm btn-info">
                             <i class="bi bi-eye-fill"></i> Ver
                         </a>
-                        <a href="/Pilotos/Editar/@p.PilotoId" class="btn btn-sm btn-warning">Editar</a>
-                        <form asp-action="Eliminar" method="post" class="d-inline">
-                            <input type="hidden" name="id" value="@p.PilotoId" />
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar piloto?');">Eliminar</button>
-                        </form>
+                        @if (rol == "Administrador")
+                        {
+                            <a href="/Pilotos/Editar/@p.PilotoId" class="btn btn-sm btn-warning">Editar</a>
+                            <form asp-action="Eliminar" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@p.PilotoId" />
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar piloto?');">Eliminar</button>
+                            </form>
+                        }
                     </td>
                 </tr>
             }

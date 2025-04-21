@@ -16,7 +16,6 @@
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Correo</th>
             <th>Equipo</th>
             <th>Acciones</th>
         </tr>
@@ -25,8 +24,7 @@
         @foreach (var jefe in Model)
         {
             <tr>
-                <td>@jefe.Usuario?.Nombre</td>
-                <td>@jefe.Usuario?.Correo</td>
+                <td>@jefe.Nombre</td>
                 <td>@jefe.Equipo?.Nombre</td>
                 <td>
                     <a href="/JefesDeEquipo/Editar/@jefe.JefeDeEquipoId" class="btn btn-sm btn-warning">
