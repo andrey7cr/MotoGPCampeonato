@@ -1,0 +1,155 @@
+﻿@model List<MotoGPCampeonato.Models.ResultadoCarrera>
+
+
+
+@{
+
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    var carrera = ViewBag.Carrera as MotoGPCampeonato.Models.Carrera;
+
+
+}
+
+
+
+
+
+<h2>Editar Resultados - @carrera.GranPremio?.Nombre (@carrera.Tipo)</h2>
+
+
+<p><strong>Fecha:</strong> @carrera.Fecha.ToShortDateString()</p>
+
+
+<p><strong>Circuito:</strong> @carrera.GranPremio?.Circuito?.Nombre</p>
+
+
+<p><strong>País:</strong> @carrera.GranPremio?.Circuito?.Pais?.Nombre</p>
+
+
+
+
+
+<form asp-action="EditarResultados" method="post">
+
+
+    <input type="hidden" name="carreraId" value="@carrera.CarreraId" />
+
+
+
+
+
+    <table class="table table-bordered table-dark">
+
+
+        <thead>
+
+
+            <tr>
+
+
+                <th>Posición</th>
+
+
+                <th>Piloto</th>
+
+
+                <th>Equipo</th>
+
+
+            </tr>
+
+
+        </thead>
+
+
+        <tbody>
+
+
+            @for (int i = 0; i < Model.Count; i++)
+
+
+            {
+
+
+                <tr>
+
+
+                    <td>@(i + 1)</td>
+
+
+                    <td>
+
+
+                        <select name="pilotoIds" class="form-select" required data-taghelper="false">
+
+
+                            @foreach (var piloto in ViewBag.TodosLosPilotos as List<MotoGPCampeonato.Models.Piloto>)
+
+
+                            {
+
+
+                                var seleccionado = Model[i].PilotoId == piloto.PilotoId ? "selected" : "";
+
+
+                                var optionHtml = $"<option value='{piloto.PilotoId}' {seleccionado}>{piloto.Nombre}</option>";
+
+
+                                @Html.Raw(optionHtml)
+
+
+                            }
+
+
+                        </select>
+
+
+                    </td>
+
+
+                    <td>@Model[i].Piloto?.Equipo?.Nombre</td>
+
+
+                </tr>
+
+
+            }
+
+
+        </tbody>
+
+
+    </table>
+
+
+
+
+
+    <div class="text-end">
+
+
+        <button type="submit" class="btn btn-success">
+
+
+            <i class="bi bi-save"></i> Guardar Cambios
+
+
+        </button>
+
+
+        <a href="/Carreras/Index" class="btn btn-secondary">
+
+
+            <i class="bi bi-arrow-left-circle"></i> Cancelar
+
+
+        </a>
+
+
+    </div>
+
+
+</form>
